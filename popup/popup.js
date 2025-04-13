@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function checkGeminiConnection() {
   try {
     const API_KEY = "AIzaSyAkwGLBRffH2EoRM70g4tapSKJ0VAgNnGA";
-    const testURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+    const testURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
     const response = await fetch(testURL, {
       method: "POST",
@@ -47,10 +47,11 @@ async function checkGeminiConnection() {
     });
 
     const json = await response.json();
-    const reply = json.candidates?.[0]?.content?.parts?.[0]?.text?.toLowerCase();
+    const reply = json?.candidates?.[0]?.content?.parts?.[0]?.text?.toLowerCase();
     return reply?.includes("ok");
   } catch (err) {
     console.error("Gemini test failed:", err);
     return false;
   }
 }
+
