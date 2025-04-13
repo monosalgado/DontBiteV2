@@ -26,6 +26,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     apiStatusEl.style.color = working ? "#00ff88" : "#ff4c4c";
   });
   const policySelect = document.getElementById("policy-select");
+  const togglePolicyBtn = document.getElementById("toggle-policy");
+  const policySection = document.getElementById("policy-section");
+
+  togglePolicyBtn.addEventListener("click", () => {
+    const isVisible = policySection.style.display === "block";
+    policySection.style.display = isVisible ? "none" : "block";
+    togglePolicyBtn.textContent = isVisible ? "⚙️ Show Policy Settings" : "⚙️ Hide Policy Settings";
+  });
 
   // Load saved policy
   chrome.storage.local.get("phishingPolicy", (data) => {
