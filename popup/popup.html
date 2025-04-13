@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DontBite Status</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="container">
+    <h1>☣️ DONTBITE</h1>
+    <p class="subtitle">Post-Apocalyptic Phishing Defense</p>
+
+    <div id="status">
+      <p><strong>Gemini API:</strong> <span id="api-status">Checking...</span></p>
+      <p><strong>Emails Analyzed:</strong> <span id="emails-analyzed">0</span></p>
+      <p><strong>Threats Detected:</strong> <span id="threats-detected">0</span></p>
+    </div>
+
+    <div id="alert-box" class="hidden">
+      <p>🚨 <strong>Warning!</strong> Suspicious email detected.</p>
+      <p class="bite-text">DONT BITE.</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
