@@ -1,4 +1,4 @@
-export async function analyzeEmailWithGemini(content, sender) {
+export async function analyzeEmailWithGemini(content, sender, subject, links) {
   const API_KEY = "AIzaSyAkwGLBRffH2EoRM70g4tapSKJ0VAgNnGA";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
@@ -11,16 +11,20 @@ export async function analyzeEmailWithGemini(content, sender) {
   
   Sender Name: ${sender.senderName}
   Sender Email: ${sender.senderEmail}
+  Email Subject: ${subject}
+  Hyperlinks Found:
+  ${links.length > 0 ? links.join('\n') : "None"}
   
   Email Content:
   ${content}
   
-  Only reply with YES or NO.`
+  Reply only with YES or NO.`
           }
         ]
       }
     ]
   };
+  
   
 
   console.log("📤 Sending to Gemini API:", JSON.stringify(prompt, null, 2));
