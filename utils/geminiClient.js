@@ -7,7 +7,7 @@ export async function analyzeEmailWithGemini(content, sender, subject, links, at
       {
         parts: [
           {
-            text: `You are a cybersecurity expert. Analyze the following email and determine if it is a phishing attempt.
+            text: `You are a cybersecurity expert. Carefully analyze the email below and determine if it is a phishing attempt or a legitimate message.
   
   Sender Name: ${sender.senderName}
   Sender Email: ${sender.senderEmail}
@@ -25,12 +25,16 @@ export async function analyzeEmailWithGemini(content, sender, subject, links, at
   Email Content:
   ${content}
   
-  Please respond with YES or NO, followed by a short explanation of your reasoning.`
+  Please respond with:
+  1. YES or NO on whether this is phishing
+  2. A brief explanation of your reasoning
+  3. A confidence score from 1 (not sure) to 10 (absolutely certain)`
           }
         ]
       }
     ]
   };
+  
   
   
 
@@ -59,10 +63,22 @@ export async function analyzeEmailWithGemini(content, sender, subject, links, at
     await chrome.storage.local.set({
       lastGeminiReason: replyText
     });
-
+    
     console.log("🔍 Gemini reply parsed:", reply);
-
-    return reply?.includes("yes");
+    
+    // Extract YES/NO decision
+    const decisionLine = reply.split("\n")[0];
+    const isPhishing = decisionLine.includes("yes");
+    
+    // Extract confidence (look for line like "Confidence: 8")
+    const confidenceMatch = reply.match(/confidence\s*[:\-]?\s*(\d+)/i);
+    const confidence = confidenceMatch ? parseInt(confidenceMatch[1]) : 10;
+    
+    console.log("🧠 Parsed Decision:", isPhishing, "| Confidence:", confidence);
+    
+    // Only return true if YES and confident enough
+    return isPhishing && confidence >= 8;
+    
   } catch (err) {
     console.error("❗ Fetch error:", err);
     return false;
