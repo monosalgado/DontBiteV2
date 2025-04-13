@@ -36,35 +36,69 @@ function getImageSources() {
   return Array.from(document.querySelectorAll('div.a3s.aiL img')).map(img => img.src);
 }
 
+function clickReportSpam() {
+  const spamButton = Array.from(document.querySelectorAll("div[role='button']"))
+    .find(el => el.getAttribute("data-tooltip")?.toLowerCase().includes("report spam"));
+  if (spamButton) spamButton.click();
+}
+
+function clickDelete() {
+  const deleteButton = Array.from(document.querySelectorAll("div[role='button']"))
+    .find(el => el.getAttribute("data-tooltip")?.toLowerCase().includes("delete"));
+  if (deleteButton) deleteButton.click();
+}
+
+
 function showFloatingAlert() {
-  // Prevent duplicates
   if (document.getElementById("dontbite-alert")) return;
 
-  const alertBox = document.createElement("div");
-  alertBox.id = "dontbite-alert";
-  alertBox.innerText = "🚨 DONT BITE — Phishing Email Detected!";
-  alertBox.style.cssText = `
+  const box = document.createElement("div");
+  box.id = "dontbite-alert";
+  box.innerHTML = `
+    <strong>🚨 DONT BITE — Phishing Detected!</strong>
+    <br>
+    <button id="dontbite-action" style="margin-top: 10px; padding: 6px; font-size: 14px;">
+      View Report
+    </button>
+  `;
+  box.style.cssText = `
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 9999;
-    background-color: #8B0000;
+    background: #8B0000;
     color: #fff;
-    font-size: 16px;
-    font-family: 'Courier New', Courier, monospace;
-    padding: 12px 16px;
-    border: 2px solid #ff4444;
-    border-radius: 8px;
+    font-family: monospace;
+    padding: 16px;
+    border-radius: 10px;
+    border: 2px solid #ff4c4c;
     box-shadow: 0 0 10px #ff0000;
-    animation: glitch 1s infinite alternate;
   `;
 
-  document.body.appendChild(alertBox);
+  document.body.appendChild(box);
 
-  setTimeout(() => {
-    alertBox.remove();
-  }, 10000); // Auto-remove after 10 seconds
+  document.getElementById("dontbite-action").onclick = async () => {
+    // Read current policy
+    chrome.storage.local.get("phishingPolicy", (data) => {
+      const policy = data.phishingPolicy || "default";
+
+      // 1. Always open the report page
+      chrome.runtime.sendMessage({ type: "open_report" });
+
+      // 2. Apply policy
+      if (policy === "delete") {
+        clickDelete();
+      } else if (policy === "spam") {
+        clickReportSpam();
+      } else if (policy === "report") {
+        alert("📤 Report to Admin is not implemented yet.");
+      }
+    });
+  };
+
+  setTimeout(() => box.remove(), 15000); // Remove after 15s
 }
+
 
 function checkForNewEmail() {
   const currentEmailId = getEmailId();

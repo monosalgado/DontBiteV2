@@ -16,6 +16,17 @@
       <p><strong>Threats Detected:</strong> <span id="threats-detected">0</span></p>
     </div>
     
+    <div id="settings">
+      <h2 style="margin-top: 20px;">Policy Settings</h2>
+      <label for="policy-select">On phishing detection:</label>
+      <select id="policy-select">
+        <option value="default">🛑 Default – Just show report</option>
+        <option value="report">📤 Report to Admin (not active)</option>
+        <option value="delete">🗑️ Delete email and show report</option>
+        <option value="spam">🚨 Send to Spam and show report</option>
+      </select>
+    </div>
+    
     <div id="alert-box" class="hidden">
       <p>🚨 <strong>Warning!</strong> Suspicious email detected.</p>
       <p class="bite-text">DONT BITE.</p>

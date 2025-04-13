@@ -25,12 +25,13 @@ export async function analyzeEmailWithGemini(content, sender, subject, links, at
   Email Content:
   ${content}
   
-  Reply only with YES or NO.`
+  Please respond with YES or NO, followed by a short explanation of your reasoning.`
           }
         ]
       }
     ]
-  };  
+  };
+  
   
 
   console.log("📤 Sending to Gemini API:", JSON.stringify(prompt, null, 2));
@@ -52,8 +53,13 @@ export async function analyzeEmailWithGemini(content, sender, subject, links, at
 
     const json = await res.json();
     console.log("📥 Gemini API response:", JSON.stringify(json, null, 2));
+    const replyText = json?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    const reply = replyText.toLowerCase();
 
-    const reply = json?.candidates?.[0]?.content?.parts?.[0]?.text?.toLowerCase();
+    await chrome.storage.local.set({
+      lastGeminiReason: replyText
+    });
+
     console.log("🔍 Gemini reply parsed:", reply);
 
     return reply?.includes("yes");

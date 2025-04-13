@@ -38,20 +38,46 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     analyzeEmailWithGemini(content, sender, subject, links, attachments, images).then((isPhishing) => {
       stats.emailsAnalyzed++;
       if (isPhishing) stats.threatsDetected++;
-
-      chrome.storage.local.set({
+    
+      // Always store basic stats
+      const baseStorage = {
         emailsAnalyzed: stats.emailsAnalyzed,
         threatsDetected: stats.threatsDetected,
         lastEmailThreat: isPhishing
-      });
-
-
+      };
+    
+      // If phishing, store report details
+      if (isPhishing) {
+        Object.assign(baseStorage, {
+          lastSender: {
+            name: sender.senderName,
+            email: sender.senderEmail
+          },
+          lastSubject: subject,
+          lastLinks: links,
+          lastAttachments: attachments
+        });
+      }
+    
+      chrome.storage.local.set(baseStorage);
       sendResponse({ status: "done", isPhishing });
     });
+    
 
     // Return true to indicate async response
     return true;
   }
 });
+
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === "open_report") {
+    chrome.tabs.create({
+      url: chrome.runtime.getURL("popup/phishing_report.html")
+    });
+  }
+});
+
+
+
 
 

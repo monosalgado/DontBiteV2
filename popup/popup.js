@@ -25,6 +25,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     apiStatusEl.textContent = working ? "✅ Working" : "❌ Error";
     apiStatusEl.style.color = working ? "#00ff88" : "#ff4c4c";
   });
+  const policySelect = document.getElementById("policy-select");
+
+  // Load saved policy
+  chrome.storage.local.get("phishingPolicy", (data) => {
+    policySelect.value = data.phishingPolicy || "default";
+  });
+
+  // Save policy on change
+  policySelect.addEventListener("change", () => {
+    const selected = policySelect.value;
+    chrome.storage.local.set({ phishingPolicy: selected }, () => {
+      console.log("✅ Policy updated to:", selected);
+    });
+  });
+
 });
 
 async function checkGeminiConnection() {
