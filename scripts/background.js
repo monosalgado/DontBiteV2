@@ -3,7 +3,7 @@
 import {analyzeEmailWithGemini} from "../utils/geminiClient.js";
 
 
-const API_KEY = "AIzaSyD30dhXhuLViQpjEx6_biewIy9o2lrRpJo"; // Replace this with your actual key
+const API_KEY = "AIzaSyAkwGLBRffH2EoRM70g4tapSKJ0VAgNnGA"; // Replace this with your actual key
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + API_KEY;
 
 // Track stats

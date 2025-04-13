@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function checkGeminiConnection() {
   try {
-    const API_KEY = "AIzaSyD30dhXhuLViQpjEx6_biewIy9o2lrRpJo";
+    const API_KEY = "AIzaSyAkwGLBRffH2EoRM70g4tapSKJ0VAgNnGA";
     const testURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
 
     const response = await fetch(testURL, {
