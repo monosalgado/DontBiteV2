@@ -1,4 +1,4 @@
-export async function analyzeEmailWithGemini(content) {
+export async function analyzeEmailWithGemini(content, sender) {
   const API_KEY = "AIzaSyAkwGLBRffH2EoRM70g4tapSKJ0VAgNnGA";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
@@ -7,12 +7,21 @@ export async function analyzeEmailWithGemini(content) {
       {
         parts: [
           {
-            text: `You are a cybersecurity expert. Carefully analyze the following email and determine if it is a phishing attack. Reply with just "YES" or "NO".\n\n${content}`
+            text: `You are a cybersecurity expert. Analyze the following email and determine if it is a phishing attempt.
+  
+  Sender Name: ${sender.senderName}
+  Sender Email: ${sender.senderEmail}
+  
+  Email Content:
+  ${content}
+  
+  Only reply with YES or NO.`
           }
         ]
       }
     ]
   };
+  
 
   console.log("📤 Sending to Gemini API:", JSON.stringify(prompt, null, 2));
 
