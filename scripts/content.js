@@ -27,6 +27,16 @@ function extractHyperlinks() {
   return links.map(a => a.href).filter(href => href.startsWith("http"));
 }
 
+function getAttachmentInfo() {
+  const attachmentElements = document.querySelectorAll('div.aQH span.aV3');
+  return Array.from(attachmentElements).map(el => el.innerText.trim());
+}
+
+function getImageSources() {
+  return Array.from(document.querySelectorAll('div.a3s.aiL img')).map(img => img.src);
+}
+
+
 
 function checkForNewEmail() {
   const currentEmailId = getEmailId();
@@ -43,6 +53,8 @@ function checkForNewEmail() {
   const sender = getSenderInfo();
   const subject = getEmailSubject();
   const links = extractHyperlinks();
+  const attachments = getAttachmentInfo();
+  const images = getImageSources();
 
 
   if (!emailContent) {
@@ -56,9 +68,11 @@ function checkForNewEmail() {
     {
       type: "analyze_email",
       content: emailContent,
+      sender: sender,
       subject: subject,
       links: links,
-      sender: sender
+      attachments: attachments,
+      images: images
     },
     (response) => {
       if (chrome.runtime.lastError) {

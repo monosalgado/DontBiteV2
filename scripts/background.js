@@ -26,9 +26,16 @@ function loadStats() {
 // Listen for email analysis requests
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "analyze_email") {
-    const { content, subject, links, sender } = message;
+    const {
+      content,
+      sender,
+      subject,
+      links,
+      attachments,
+      images
+    } = message;       
 
-    analyzeEmailWithGemini(content, sender, subject, links).then((isPhishing) => {
+    analyzeEmailWithGemini(content, sender, subject, links, attachments, images).then((isPhishing) => {
       stats.emailsAnalyzed++;
       if (isPhishing) stats.threatsDetected++;
 
