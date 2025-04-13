@@ -54,14 +54,14 @@ function showFloatingAlert() {
 
   const box = document.createElement("div");
   box.id = "dontbite-alert";
-  box.innerHTML = `
+  box.innerHTML =`
     <strong>🚨 DONT BITE — Phishing Detected!</strong>
     <br>
     <button id="dontbite-action" style="margin-top: 10px; padding: 6px; font-size: 14px;">
-      View Report
+      Catch the Phishing
     </button>
   `;
-  box.style.cssText = `
+  box.style.cssText =` 
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -84,14 +84,15 @@ function showFloatingAlert() {
       const policy = data.phishingPolicy || "default";
   
       if (policy !== "default") {
-        alert(`⚠️ The "${policy}" policy is not yet available in this version.`);
+        alert(`⚠️The "${policy}" policy is not yet available in this version.`);
       }
     });
   };
   
 
   setTimeout(() => box.remove(), 15000); // Remove after 15s
-}
+} 
+
 
 
 function checkForNewEmail() {
