@@ -78,23 +78,17 @@ function showFloatingAlert() {
   document.body.appendChild(box);
 
   document.getElementById("dontbite-action").onclick = async () => {
-    // Read current policy
+    chrome.runtime.sendMessage({ type: "open_report" });
+  
     chrome.storage.local.get("phishingPolicy", (data) => {
       const policy = data.phishingPolicy || "default";
-
-      // 1. Always open the report page
-      chrome.runtime.sendMessage({ type: "open_report" });
-
-      // 2. Apply policy
-      if (policy === "delete") {
-        clickDelete();
-      } else if (policy === "spam") {
-        clickReportSpam();
-      } else if (policy === "report") {
-        alert("📤 Report to Admin is not implemented yet.");
+  
+      if (policy !== "default") {
+        alert(`⚠️ The "${policy}" policy is not yet available in this version.`);
       }
     });
   };
+  
 
   setTimeout(() => box.remove(), 15000); // Remove after 15s
 }

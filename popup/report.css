@@ -56,3 +56,11 @@ body {
     border-radius: 4px;
   }
   
+  ul#links-list li {
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    max-width: 100%;
+  }
+  
+  
